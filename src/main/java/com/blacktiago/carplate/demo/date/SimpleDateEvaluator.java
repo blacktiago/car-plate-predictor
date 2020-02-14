@@ -12,6 +12,7 @@ public class SimpleDateEvaluator implements DateEvaluator {
     public Date parse(String date) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         dateFormat.applyPattern(allowedFormat());
+        dateFormat.setLenient(false);
         return dateFormat.parse(date);
     }
 
