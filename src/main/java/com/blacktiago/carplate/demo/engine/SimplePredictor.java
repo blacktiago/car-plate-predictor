@@ -2,6 +2,8 @@ package com.blacktiago.carplate.demo.engine;
 
 import com.blacktiago.carplate.demo.date.DateEvaluator;
 import com.blacktiago.carplate.demo.date.SimpleDateEvaluator;
+import com.blacktiago.carplate.demo.plate.PlateEvaluator;
+import com.blacktiago.carplate.demo.plate.SimplePlateEvaluator;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Calendar;
@@ -11,14 +13,30 @@ import java.util.Date;
 public class SimplePredictor implements Predictor{
 
     private DateEvaluator dateEvaluator = new SimpleDateEvaluator();
+    private PlateEvaluator plateEvaluator = new SimplePlateEvaluator();
 
     private Date date;
     private int dayOfWeek;
+    private int lastPlateDigit;
 
     public boolean isAllowed(String plate, String date, String time){
         boolean allowed = false;
         processDate(date);
+        processPlate(plate);
         return allowed;
+    }
+
+    @Override
+    public String validPlateExample() {
+        return "PDL 2312";
+    }
+
+    private void processPlate(String plate) {
+        if(plateEvaluator.isValidPlate(plate)){
+            this.lastPlateDigit = plateEvaluator.getEvaluationDigit(plate);
+        } else {
+            throw new IllegalArgumentException("Plate "+plate+" is not valid");
+        }
     }
 
     private void processDate(String date) {
