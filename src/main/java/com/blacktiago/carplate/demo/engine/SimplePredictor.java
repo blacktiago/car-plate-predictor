@@ -10,8 +10,12 @@ import com.blacktiago.carplate.demo.time.SimpleTimeEvaluator;
 import com.blacktiago.carplate.demo.time.TimeEvaluator;
 import lombok.extern.slf4j.Slf4j;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
 
 @Slf4j
 public class SimplePredictor implements Predictor{
@@ -20,27 +24,55 @@ public class SimplePredictor implements Predictor{
     private PlateEvaluator plateEvaluator = new SimplePlateEvaluator();
     private TimeEvaluator timeEvaluator = new SimpleTimeEvaluator();
     private PlateConfigRepository configRepository = new LocalPlateConfigRepository();
-
-    private Date date;
-    private int dayOfWeek;
-    private int lastPlateDigit;
-    private int hour;
-    private int minute;
     private PlateRestrictionConfig plateConfig;
 
+    private int dayOfWeek = -1;
+    private int lastPlateDigit;
+    private String time;
+
     public boolean isAllowed(String plate, String date, String time){
-        boolean allowed = false;
         processDate(date);
         processPlate(plate);
         processTime(time);
-        this.plateConfig = configRepository.loadConfig();
-        return allowed;
+        plateConfig = configRepository.loadConfig();
+
+        boolean dayOfControl = plateConfig.days.containsKey(dayOfWeek);
+        boolean dayMatchWithPlate = plateConfig.days.get(dayOfWeek).contains(lastPlateDigit);
+        boolean isInControlHours = (validateHour("am") || validateHour("pm"));
+
+        return !(dayOfControl && dayMatchWithPlate && isInControlHours);
+    }
+
+    private boolean validateHour(String timeKey) {
+        boolean isValid = true;
+        if(plateConfig.time.containsKey(timeKey)){
+            HashMap<String, String> timeItem =plateConfig.time.get(timeKey);
+            try {
+                Date time1 = dateOf(timeItem.get("begin"));
+                Date time2 = dateOf(timeItem.get("end"));
+                Date now = dateOf(time);
+
+                isValid = now.after(time1) && now.before(time2);
+            } catch (ParseException e) {
+                log.error("Unable to evaluate time for "+timeKey, e);
+                isValid = false;
+            }
+
+        }
+        return isValid;
+    }
+
+    private Date dateOf(String timeArgument) throws ParseException {
+        Date time1 = new SimpleDateFormat("HH:mm").parse(timeArgument);
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTime(time1);
+        calendar1.add(Calendar.DATE, 1);
+        return time1;
     }
 
     private void processTime(String time) {
         if(timeEvaluator.isValidTime(time)){
-            this.hour = timeEvaluator.hourOf(time);
-            this.minute = timeEvaluator.minuteOf(time);
+            this.time = time;
         } else {
             log.error("Time "+time+" is not valid, please use format like "+timeEvaluator.validTimeExample());
         }
@@ -57,9 +89,11 @@ public class SimplePredictor implements Predictor{
     private void processDate(String date) {
         try{
             if(dateEvaluator.isValidFormat(date)){
-                this.date = dateEvaluator.parse(date);
-                Calendar calendar = Calendar.getInstance();
-                this.dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+                Locale aLocale = new Locale.Builder().setLanguage("es").setRegion("EC").build();
+                Calendar c = Calendar.getInstance(aLocale);
+                Date parsedDate = dateEvaluator.parse(date);
+                c.setTime(parsedDate);
+                dayOfWeek  = c.get(Calendar.DAY_OF_WEEK);
             }
         } catch (Exception ex){
             log.error("Date "+date+" is not valid, please use format like "+dateEvaluator.allowedFormat());

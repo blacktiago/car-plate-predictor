@@ -6,14 +6,15 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @Data
 public class PlateRestrictionConfig {
 
     @Setter
-    HashMap<String, HashMap<String, String>> time;
+    Map<String, HashMap<String, String>> time = new HashMap<>();
 
     @Setter
-    HashMap<Integer, ArrayList<String>> days;
+    Map<Integer, ArrayList<Integer>> days = new HashMap<>();
 
 }

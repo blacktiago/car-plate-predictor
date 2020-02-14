@@ -13,15 +13,15 @@ class CarPlatePredictorApplicationTests {
 
     @Test
     void isCarPlateAllowed() {
-        Assert.isTrue(predictor.isAllowed("PSD 2556", "13/02/2020", "08:30"), "Allowed plate");
-        Assert.isTrue(predictor.isAllowed("PSD 2557", "11/02/2020", "08:30"), "Allowed date");
-        Assert.isTrue(predictor.isAllowed("PSD 2557", "13/02/2020", "14:45"), "Allowed time");
+        Assert.isTrue(predictor.isAllowed("PSD 2556", "13-02-2020", "08:30"), "Allowed plate");
+        Assert.isTrue(predictor.isAllowed("PSD 2557", "11-02-2020", "08:30"), "Allowed date");
+        Assert.isTrue(predictor.isAllowed("PSD 2557", "13-02-2020", "14:45"), "Allowed time");
 
     }
 
     @Test
     void isCarPlateDenied() {
-        Assert.isTrue(!predictor.isAllowed("PTY 2557", "13/02/2020", "08:30"), "Not allowed plate");
+        Assert.isTrue(!predictor.isAllowed("PTY 2557", "13-02-2020", "08:30"), "Not allowed plate");
     }
 
 }
