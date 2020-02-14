@@ -99,4 +99,16 @@ public class SimplePredictor implements Predictor{
             log.error("Date "+date+" is not valid, please use format like "+dateEvaluator.allowedFormat());
         }
     }
+
+    public String plateExample(){
+        return plateEvaluator.validPlateExample();
+    }
+
+    public String dateExample(){
+        return "31-12-2020";
+    }
+
+    public String timeExample(){
+        return timeEvaluator.validTimeExample();
+    }
 }

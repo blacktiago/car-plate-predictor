@@ -4,10 +4,8 @@ import com.blacktiago.carplate.demo.engine.PlateRestrictionConfig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ClassPathResource;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 @Slf4j
@@ -20,11 +18,8 @@ public class LocalPlateConfigRepository implements PlateConfigRepository{
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-
-            Resource resource = new ClassPathResource("config.json");
-            File file = resource.getFile();
-
-            config = objectMapper.readValue(file, PlateRestrictionConfig.class);
+            FileInputStream jsonConfig = new FileInputStream("./config.json");
+            config = objectMapper.readValue(jsonConfig, PlateRestrictionConfig.class);
             
         } catch (IOException e) {
             log.error("Unable to load plate predictor configuration ", e);
