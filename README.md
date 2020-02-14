@@ -1,4 +1,4 @@
-# car-plate-predictor
+# Car plate predictor
 Spring boot app to find if a car plate number is allow or not to go out
 
 Download our last binary from [here](https://github.com/blacktiago/car-plate-predictor/packages/128536)
@@ -48,3 +48,8 @@ To execute this program provide plate, date and time you want to know if is allo
 ```shell
 java -jar CarPlatePredictor-1.0.0-M1.jar -p "PFB 2317" -d "13-02-2020" -t "8:30"
 ```
+
+
+
+
+Follow me on [@blacktiago](https://twitter.com/blacktiago)
