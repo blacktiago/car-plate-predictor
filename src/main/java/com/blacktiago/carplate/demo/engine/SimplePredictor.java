@@ -20,6 +20,7 @@ import java.util.Locale;
 @Slf4j
 public class SimplePredictor implements Predictor{
 
+    private static final String NOT_VALID_FORMAT = " is not valid, please use format like ";
     private DateEvaluator dateEvaluator = new SimpleDateEvaluator();
     private PlateEvaluator plateEvaluator = new SimplePlateEvaluator();
     private TimeEvaluator timeEvaluator = new SimpleTimeEvaluator();
@@ -74,7 +75,7 @@ public class SimplePredictor implements Predictor{
         if(timeEvaluator.isValidTime(time)){
             this.time = time;
         } else {
-            log.error("Time "+time+" is not valid, please use format like "+timeEvaluator.validTimeExample());
+            log.error("Time "+time+ NOT_VALID_FORMAT +timeEvaluator.validTimeExample());
         }
     }
 
@@ -82,7 +83,7 @@ public class SimplePredictor implements Predictor{
         if(plateEvaluator.isValidPlate(plate)){
             this.lastPlateDigit = plateEvaluator.getEvaluationDigit(plate);
         } else {
-            log.error("Plate "+plate+" is not valid, please use format like "+plateEvaluator.validPlateExample());
+            log.error("Plate "+plate+ NOT_VALID_FORMAT +plateEvaluator.validPlateExample());
         }
     }
 
@@ -96,7 +97,7 @@ public class SimplePredictor implements Predictor{
                 dayOfWeek  = c.get(Calendar.DAY_OF_WEEK);
             }
         } catch (Exception ex){
-            log.error("Date "+date+" is not valid, please use format like "+dateEvaluator.allowedFormat());
+            log.error("Date "+date+ NOT_VALID_FORMAT +dateEvaluator.allowedFormat());
         }
     }
 

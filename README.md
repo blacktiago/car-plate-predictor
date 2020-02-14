@@ -1,7 +1,9 @@
 # car-plate-predictor
 Spring boot app to find if a car plate number is allow or not to go out
 
-In order to execute this program you need to provide a json config file like this
+Download our last binary from [here](https://github.com/blacktiago/car-plate-predictor/packages/128536)
+
+In order to execute this program you need to provide a json config like this
 ```json
 {
   "time": {
@@ -39,7 +41,9 @@ In order to execute this program you need to provide a json config file like thi
 }
 ```
 
-To execute this program provide the plate, date and time you want to know if is allowed or not to drive
+Place the above config file at the same path where the program will be executed
+
+To execute this program provide plate, date and time you want to know if is allowed or not to drive
 
 ```shell
 java -jar CarPlatePredictor-1.0.0-M1.jar -p "PFB 2317" -d "13-02-2020" -t "8:30"
