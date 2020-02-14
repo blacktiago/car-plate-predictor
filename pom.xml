@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.blacktiago.carplate</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>CarPlatePredictor</artifactId>
     <version>1.0.0-M1-SNAPSHOT</version>
     <name>Car Plate Predictor</name>
     <description>Spring Boot Car Plate Predictor</description>
@@ -40,6 +40,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
