@@ -19,12 +19,28 @@ public class SimpleTimeEvaluator implements TimeEvaluator{
         }
 
         if(isValid){
-            String[] timeParts = time.split(":");
-            int hour = Integer.parseInt(timeParts[0]);
-            int minute = Integer.parseInt(timeParts[1]);
+            int hour = hourOf(time);
+            int minute = minuteOf(time);
             isValid = (hour >= 0 && hour <= 23) && (minute >= 0 && minute <= 59);
         }
         return isValid;
+    }
+
+    @Override
+    public String validTimeExample() {
+        return "14:30";
+    }
+
+    @Override
+    public int hourOf(String time) {
+        String[] timeParts = time.split(":");
+        return Integer.parseInt(timeParts[0]);
+    }
+
+    @Override
+    public int minuteOf(String time) {
+        String[] timeParts = time.split(":");
+        return Integer.parseInt(timeParts[1]);
     }
 
 }

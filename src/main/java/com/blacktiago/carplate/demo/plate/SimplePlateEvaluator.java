@@ -21,4 +21,9 @@ public class SimplePlateEvaluator implements PlateEvaluator{
 
         return Integer.parseInt(plate.substring(plate.length() - 1));
     }
+
+    @Override
+    public String validPlateExample() {
+        return "PDL 2312";
+    }
 }

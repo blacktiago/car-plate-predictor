@@ -4,6 +4,8 @@ import com.blacktiago.carplate.demo.date.DateEvaluator;
 import com.blacktiago.carplate.demo.date.SimpleDateEvaluator;
 import com.blacktiago.carplate.demo.plate.PlateEvaluator;
 import com.blacktiago.carplate.demo.plate.SimplePlateEvaluator;
+import com.blacktiago.carplate.demo.time.SimpleTimeEvaluator;
+import com.blacktiago.carplate.demo.time.TimeEvaluator;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Calendar;
@@ -14,10 +16,13 @@ public class SimplePredictor implements Predictor{
 
     private DateEvaluator dateEvaluator = new SimpleDateEvaluator();
     private PlateEvaluator plateEvaluator = new SimplePlateEvaluator();
+    private TimeEvaluator timeEvaluator = new SimpleTimeEvaluator();
 
     private Date date;
     private int dayOfWeek;
     private int lastPlateDigit;
+    private int hour;
+    private int minute;
 
     public boolean isAllowed(String plate, String date, String time){
         boolean allowed = false;
@@ -28,18 +33,19 @@ public class SimplePredictor implements Predictor{
     }
 
     private void processTime(String time) {
-    }
-
-    @Override
-    public String validPlateExample() {
-        return "PDL 2312";
+        if(timeEvaluator.isValidTime(time)){
+            this.hour = timeEvaluator.hourOf(time);
+            this.minute = timeEvaluator.minuteOf(time);
+        } else {
+            log.error("Time "+time+" is not valid, please use format like "+timeEvaluator.validTimeExample());
+        }
     }
 
     private void processPlate(String plate) {
         if(plateEvaluator.isValidPlate(plate)){
             this.lastPlateDigit = plateEvaluator.getEvaluationDigit(plate);
         } else {
-            throw new IllegalArgumentException("Plate "+plate+" is not valid");
+            log.error("Plate "+plate+" is not valid, please use format like "+plateEvaluator.validPlateExample());
         }
     }
 
@@ -51,7 +57,7 @@ public class SimplePredictor implements Predictor{
                 this.dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
             }
         } catch (Exception ex){
-            log.error("Enexpected date parsing error ", ex);
+            log.error("Date "+date+" is not valid, please use format like "+dateEvaluator.allowedFormat());
         }
     }
 }
