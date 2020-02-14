@@ -2,6 +2,8 @@ package com.blacktiago.carplate.demo.engine;
 
 import com.blacktiago.carplate.demo.date.DateEvaluator;
 import com.blacktiago.carplate.demo.date.SimpleDateEvaluator;
+import com.blacktiago.carplate.demo.engine.repository.LocalPlateConfigRepository;
+import com.blacktiago.carplate.demo.engine.repository.PlateConfigRepository;
 import com.blacktiago.carplate.demo.plate.PlateEvaluator;
 import com.blacktiago.carplate.demo.plate.SimplePlateEvaluator;
 import com.blacktiago.carplate.demo.time.SimpleTimeEvaluator;
@@ -17,18 +19,21 @@ public class SimplePredictor implements Predictor{
     private DateEvaluator dateEvaluator = new SimpleDateEvaluator();
     private PlateEvaluator plateEvaluator = new SimplePlateEvaluator();
     private TimeEvaluator timeEvaluator = new SimpleTimeEvaluator();
+    private PlateConfigRepository configRepository = new LocalPlateConfigRepository();
 
     private Date date;
     private int dayOfWeek;
     private int lastPlateDigit;
     private int hour;
     private int minute;
+    private PlateRestrictionConfig plateConfig;
 
     public boolean isAllowed(String plate, String date, String time){
         boolean allowed = false;
         processDate(date);
         processPlate(plate);
         processTime(time);
+        this.plateConfig = configRepository.loadConfig();
         return allowed;
     }
 
