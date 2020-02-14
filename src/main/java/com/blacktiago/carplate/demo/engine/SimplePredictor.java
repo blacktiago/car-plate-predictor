@@ -23,7 +23,11 @@ public class SimplePredictor implements Predictor{
         boolean allowed = false;
         processDate(date);
         processPlate(plate);
+        processTime(time);
         return allowed;
+    }
+
+    private void processTime(String time) {
     }
 
     @Override
