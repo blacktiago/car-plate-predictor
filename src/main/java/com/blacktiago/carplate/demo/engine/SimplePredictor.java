@@ -1,7 +1,6 @@
 package com.blacktiago.carplate.demo.engine;
 
-import com.blacktiago.carplate.demo.date.DateEvaluator;
-import com.blacktiago.carplate.demo.date.SimpleDateEvaluator;
+import com.blacktiago.carplate.demo.date.*;
 import com.blacktiago.carplate.demo.engine.repository.LocalPlateConfigRepository;
 import com.blacktiago.carplate.demo.engine.repository.PlateConfigRepository;
 import com.blacktiago.carplate.demo.plate.PlateEvaluator;
@@ -10,6 +9,7 @@ import com.blacktiago.carplate.demo.time.SimpleTimeEvaluator;
 import com.blacktiago.carplate.demo.time.TimeEvaluator;
 import lombok.extern.slf4j.Slf4j;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,20 +28,56 @@ public class SimplePredictor implements Predictor{
     private PlateRestrictionConfig plateConfig;
 
     private int dayOfWeek = -1;
-    private int lastPlateDigit;
+    private int lastPlateDigit = -1;
     private String time;
 
+    private Prediction prediction = new Prediction();
+
+    @Override
     public boolean isAllowed(String plate, String date, String time){
+
+        plateConfig = configRepository.loadConfig();
+
+        prediction.setAllowed(validArguments(plate, date, time));
+
+        if(prediction.isAllowed()){
+            evaluateRules(plate, date, time);
+        }
+
+        return prediction.isAllowed();
+    }
+
+    private void evaluateRules(String plate, String date, String time) {
+        String message;
+        if(plateConfig.days.containsKey(dayOfWeek) &&
+                plateConfig.days.get(dayOfWeek).contains(lastPlateDigit) &&
+                (validateHour("am") || validateHour("pm"))){
+
+            prediction.setAllowed(false);
+            message = userMessage("Sorry your car with plate {0} is not allowed on date {1} at {2}",
+                    plate, date, time);
+        } else {
+            prediction.setAllowed(true);
+            message = userMessage("Congrats your car with plate {0} is allowed to go out at {1} of {2}",
+                    plate, time, date);
+        }
+        prediction.setMessage(message);
+    }
+
+    private boolean validArguments(String plate, String date, String time) {
         processDate(date);
         processPlate(plate);
         processTime(time);
-        plateConfig = configRepository.loadConfig();
 
-        boolean dayOfControl = plateConfig.days.containsKey(dayOfWeek);
-        boolean dayMatchWithPlate = plateConfig.days.get(dayOfWeek).contains(lastPlateDigit);
-        boolean isInControlHours = (validateHour("am") || validateHour("pm"));
+        return (dayOfWeek > 0 && dayOfWeek <= 7 ) &&
+                (lastPlateDigit >= 0  && lastPlateDigit <= 9 ) &&
+                time != null;
+    }
 
-        return !(dayOfControl && dayMatchWithPlate && isInControlHours);
+    @Override
+    public Prediction canDrive(String plate, String date, String time) {
+        isAllowed(plate, date, time);
+        return prediction;
     }
 
     private boolean validateHour(String timeKey) {
@@ -55,12 +91,19 @@ public class SimplePredictor implements Predictor{
 
                 isValid = now.after(time1) && now.before(time2);
             } catch (ParseException e) {
-                log.error("Unable to evaluate time for "+timeKey, e);
+                String message  = userMessage("Unable to evaluate time for {0}", timeKey);
+                prediction.setMessage(message);
+                log.error(message, e);
                 isValid = false;
             }
 
         }
         return isValid;
+    }
+
+    private String userMessage(String message, String... args) {
+        MessageFormat mf = new MessageFormat(message);
+        return mf.format(args);
     }
 
     private Date dateOf(String timeArgument) throws ParseException {
@@ -75,7 +118,9 @@ public class SimplePredictor implements Predictor{
         if(timeEvaluator.isValidTime(time)){
             this.time = time;
         } else {
-            log.error("Time "+time+ NOT_VALID_FORMAT +timeEvaluator.validTimeExample());
+            String message  = userMessage("Time {0} {1} {2}", time, NOT_VALID_FORMAT, timeEvaluator.validTimeExample());
+            prediction.setMessage(message);
+            log.error(message);
         }
     }
 
@@ -83,7 +128,9 @@ public class SimplePredictor implements Predictor{
         if(plateEvaluator.isValidPlate(plate)){
             this.lastPlateDigit = plateEvaluator.getEvaluationDigit(plate);
         } else {
-            log.error("Plate "+plate+ NOT_VALID_FORMAT +plateEvaluator.validPlateExample());
+            String message  = userMessage("Plate {0} {1} {2}", plate, NOT_VALID_FORMAT, plateEvaluator.validPlateExample());
+            prediction.setMessage(message);
+            log.error(message);
         }
     }
 
@@ -97,19 +144,9 @@ public class SimplePredictor implements Predictor{
                 dayOfWeek  = c.get(Calendar.DAY_OF_WEEK);
             }
         } catch (Exception ex){
-            log.error("Date "+date+ NOT_VALID_FORMAT +dateEvaluator.allowedFormat());
+            String message  = userMessage("Date {0} {1} {2}", date, NOT_VALID_FORMAT, dateEvaluator.allowedFormat());
+            prediction.setMessage(message);
+            log.error(message, ex);
         }
-    }
-
-    public String plateExample(){
-        return plateEvaluator.validPlateExample();
-    }
-
-    public String dateExample(){
-        return "31-12-2020";
-    }
-
-    public String timeExample(){
-        return timeEvaluator.validTimeExample();
     }
 }
