@@ -44,12 +44,28 @@ In order to execute this program you need to provide a json config like this
 }
 ```
 
-Place the above config file at the same path where the program will be executed
+Place the above config file at the same path where the program will be executed.
 
-To execute this program provide plate, date and time you want to know if is allowed or not to drive
+
+### Run as rest service
+If you want to execute car plate predictor as rest service use the following command:
+```shell
+java -jar CarPlatePredictor-1.0.0-M2.jar
+```
+
+then you could consume it on port **8080/predict** sending plate, date and time as bellow:
+
+```
+http://localhost:8080/predict?plate=PRD%202348&date=08-02-2020&time=8:30
+```
+
+
+### Console run and die
+
+Ypu could also execute it form console to test values, just provide plate, date and time. Argument **-dry** indicates print result and exit.
 
 ```shell
-java -jar CarPlatePredictor-1.0.0-M1.jar -p "PFB 2317" -d "13-02-2020" -t "8:30"
+java -jar CarPlatePredictor-1.0.0-M2.jar -dry -p "PFB 2317" -d "13-02-2020" -t "8:30"
 ```
 
 
