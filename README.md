@@ -1,4 +1,7 @@
 # Car plate predictor
+
+[![Build Status](https://travis-ci.com/blacktiago/car-plate-predictor.svg?branch=master)](https://travis-ci.com/blacktiago/car-plate-predictor) x
+
 Spring boot app to find if a car plate number is allow or not to go out
 
 Download our last binary from [here](https://github.com/blacktiago/car-plate-predictor/packages/128536)
