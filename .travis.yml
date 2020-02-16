@@ -2,3 +2,13 @@ language: java
 rvm:
  - 2.2
  - jruby
+
+addons:
+  sonarcloud:
+    organization: "blacktiago"
+    token:
+      secure: "LdGxtGfl8QBn4IO/sujZ1eammXCC7w0AzrUTKVhY/l+ujzZOX7wC+M01LdBNg0RhHpC/VEHPk0j3N6wOop/7Kwuz0td95oDUYIYtXZ7i2GsdJq/OF71OjURDFYvYxeOt2Hcx+FfrlgaxfbhCGLJcAr7iOBn3VbU44Xdu+gCyF+WbzTzOMSR5NQ1q3u8MTzvQ88pVdNG6tAFbbTqUN2YUd2gND6xwvVPKNKi4+cdJAtzdIFTQii5stqVViLRpqc/OilOkdj7mkjBUZU3wF2vSrrSS66wJnAy7clBWoY6pzHQ/Eh/jfNjfkkLPl67iwhSsjzKCLNKoTE/QSG7nvLS7vC2UAVfyugkpnh9XpUUy0lfl8E0M4k8WdYMtCuTj+3I6rYvO3/IcaVETGnswUV1a8WmMP/gZlKCx1U3u43gbqrAOWVsFrY1ZbMEJfTvzKt3pCHfnouE3/psJn96ijAbbU7JL7iyjwZ6mX7k6kv3xRazGHpoQW5WZ4cHLnkDN4Wehpje6dp+vCBNdmU8TnThnBLRpq7dXtbnZQvdlwTbzW9ukeL2fmnlTfu67cmTHnw9omOlvBtvLQX+Ul4dBiguzpvAgmCl2gO5C96nEQYQkSlK6FyytKh1rhLUWZF/9BIJH+qms00TtRjD6IbFZqI//zn/abyUGwiFfxbNpo5xiGkk="
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=blacktiago_car-plate-predictor
