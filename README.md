@@ -1,10 +1,7 @@
 # Car plate predictor
 
-[![Build Status](https://travis-ci.com/blacktiago/car-plate-predictor.svg?branch=master)](https://travis-ci.com/blacktiago/car-plate-predictor)
+[![Build Status](https://travis-ci.com/blacktiago/car-plate-predictor.svg?branch=master)](https://travis-ci.com/blacktiago/car-plate-predictor) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=blacktiago_car-plate-predictor&metric=alert_status)](https://sonarcloud.io/dashboard?id=blacktiago_car-plate-predictor)
 
-Spring boot app to find if a car plate number is allow or not to go out
-
-Download our last binary from [here](https://github.com/blacktiago/car-plate-predictor/packages/128536)
 
 In order to execute this program you need to provide a json config like this
 ```json
