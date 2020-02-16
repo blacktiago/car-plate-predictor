@@ -135,6 +135,8 @@ public class SimplePredictor implements Predictor{
     }
 
     private void processDate(String date) {
+        String message  = userMessage("Date {0} {1} {2}", date, NOT_VALID_FORMAT, dateEvaluator.allowedFormat());
+
         try{
             if(dateEvaluator.isValidFormat(date)){
                 Locale aLocale = new Locale.Builder().setLanguage("es").setRegion("EC").build();
@@ -142,11 +144,13 @@ public class SimplePredictor implements Predictor{
                 Date parsedDate = dateEvaluator.parse(date);
                 c.setTime(parsedDate);
                 dayOfWeek  = c.get(Calendar.DAY_OF_WEEK);
+            } else {
+                prediction.setMessage(message);
             }
         } catch (Exception ex){
-            String message  = userMessage("Date {0} {1} {2}", date, NOT_VALID_FORMAT, dateEvaluator.allowedFormat());
             prediction.setMessage(message);
             log.error(message, ex);
         }
+
     }
 }

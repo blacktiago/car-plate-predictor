@@ -59,6 +59,9 @@ then you could consume it on port **8080/predict** sending plate, date and time 
 http://localhost:8080/predict?plate=PRD%202348&date=08-02-2020&time=8:30
 ```
 
+### React web app
+
+At root uri **http://localhost:8080/** there is a react web app to test our rest endpoint, the source code is [here](https://github.com/blacktiago/car-plate-predictor-frontend) 
 
 ### Console run and die
 

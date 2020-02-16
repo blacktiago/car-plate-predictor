@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.blacktiago.carplate</groupId>
     <artifactId>CarPlatePredictor</artifactId>
-    <version>1.0.0-M2-SNAPSHOT</version>
+    <version>1.0.0-M3-SNAPSHOT</version>
     <name>Car Plate Predictor</name>
     <description>Spring Boot Car Plate Predictor</description>
 
@@ -80,7 +80,7 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <excludes>
-                    <exclude>**/config.json</exclude>
+                    <exclude>config.json</exclude>
                 </excludes>
             </resource>
         </resources>
