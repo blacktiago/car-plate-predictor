@@ -80,7 +80,7 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <excludes>
-                    <exclude>**/config.json</exclude>
+                    <exclude>config.json</exclude>
                 </excludes>
             </resource>
         </resources>

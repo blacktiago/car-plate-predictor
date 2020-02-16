@@ -1,8 +1,11 @@
 HELP.md
 target/
-!.mvn/wrapper/maven-wrapper.jar
+.mvn/
 !**/src/main/**
 !**/src/test/**
+mvnw
+mvnw.cmd
+pom.xml.versionsBackup
 
 ### STS ###
 .apt_generated
