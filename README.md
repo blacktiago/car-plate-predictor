@@ -62,13 +62,32 @@ At root uri **http://localhost:8080/** there is a react web app to test our rest
 
 ### Console run and die
 
-Ypu could also execute it form console to test values, just provide plate, date and time. Argument **-dry** indicates print result and exit.
+Ypu could also execute it from console to test values, just provide plate, date and time. Argument **-dry** indicates print result and exit.
 
 ```shell
 java -jar CarPlatePredictor-1.0.0-M2.jar -dry -p "PFB 2317" -d "13-02-2020" -t "8:30"
 ```
 
+## Docker Image
 
+If you want to use the Docker [image](https://hub.docker.com/r/blaktiago/car-plate-predictor/tags
+) of car plate predictor use the following command
 
+```shell
+docker pull blaktiago/car-plate-predictor
+```
+
+## Kubernetes pod
+
+To run as Kubernetes pod in the root path of the project execute:
+```shell
+kubectl create -f deployment.yaml
+```
+
+Then map the service port to your desired port 
+
+```shell
+kubectl port-forward svc/car-plate-predictor 8080:8090
+```
 
 Follow me on [@blacktiago](https://twitter.com/blacktiago)
