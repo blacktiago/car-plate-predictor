@@ -68,7 +68,7 @@ Ypu could also execute it from console to test values, just provide plate, date 
 java -jar CarPlatePredictor-1.0.0-M2.jar -dry -p "PFB 2317" -d "13-02-2020" -t "8:30"
 ```
 
-##Docker Image
+## Docker Image
 
 If you want to use the Docker [image](https://hub.docker.com/r/blaktiago/car-plate-predictor/tags
 ) of car plate predictor use the following command
