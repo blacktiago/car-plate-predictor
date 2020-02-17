@@ -77,5 +77,17 @@ If you want to use the Docker [image](https://hub.docker.com/r/blaktiago/car-pla
 docker pull blaktiago/car-plate-predictor
 ```
 
+## Kubernetes pod
+
+To run as Kubernetes pod in the root path of the project execute:
+```shell
+kubectl create -f deployment.yaml
+```
+
+Then map the service port to your desired port 
+
+```shell
+kubectl port-forward svc/car-plate-predictor 8080:8090
+```
 
 Follow me on [@blacktiago](https://twitter.com/blacktiago)

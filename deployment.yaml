@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: car-plate-predictor
+  name: car-plate-predictor
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: car-plate-predictor
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: car-plate-predictor
+    spec:
+      containers:
+      - image: blaktiago/car-plate-predictor:1.0.0-M3-SNAPSHOT
+        name: car-plate-predictor
+        resources: {}
+status: {}
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: car-plate-predictor
+  name: car-plate-predictor
+spec:
+  ports:
+  - name: 8080-8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: car-plate-predictor
+  type: ClusterIP
+status:
+  loadBalancer: {}
