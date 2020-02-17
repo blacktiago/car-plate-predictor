@@ -71,7 +71,7 @@ java -jar CarPlatePredictor-1.0.0-M2.jar -dry -p "PFB 2317" -d "13-02-2020" -t "
 ##Docker Image
 
 If you want to use the Docker [image](https://hub.docker.com/r/blaktiago/car-plate-predictor/tags
-) of car plate predictor with the following command
+) of car plate predictor use the following command
 
 ```shell
 docker pull blaktiago/car-plate-predictor
